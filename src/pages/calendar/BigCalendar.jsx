@@ -117,9 +117,19 @@ const BigCalendar = () => {
             timeGutterHeader: WeekHeader,
           },
         }}
-        onSelectSlot={slot =>
-          !moment(slot.start).isBefore() ? setSelectedSlot(slot) : false
-        }
+        onSelectSlot={slot => {
+          if (createModalOpen) {
+            setCreateModalOpen(false);
+          } else if (!editModalOpen) {
+            return !moment(slot.start).isBefore()
+              ? setSelectedSlot(slot)
+              : false;
+          } else {
+            setEventToEdit(undefined);
+            setEditModalOpen(false);
+          }
+          return true;
+        }}
         selectable
         onSelectEvent={(event, e) => {
           setEventToEdit(event);
